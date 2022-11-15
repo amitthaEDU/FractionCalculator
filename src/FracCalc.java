@@ -39,8 +39,8 @@ public class FracCalc {
             fraction1.useDelimiter("/");
             numerator1 = fraction1.nextInt();
             denominator1 = fraction1.nextInt();
-
-            numerator1 += (wholeFrac1 * denominator1);
+            if (wholeFrac1 < 0) {numerator1 = (wholeFrac1 * denominator1) - numerator1;}
+            else {numerator1 += (wholeFrac1 * denominator1);}
         }
         else {
             Scanner fraction1 = new Scanner(frac1);
@@ -58,8 +58,8 @@ public class FracCalc {
             fraction2.useDelimiter("/");
             numerator2 = fraction2.nextInt();
             denominator2 = fraction2.nextInt();
-
-            numerator2 += (wholeFrac2 * denominator2);
+            if (wholeFrac2 < 0) {numerator2 = (wholeFrac2 * denominator2) - numerator2;}
+            else {numerator2 += (wholeFrac2 * denominator2);}
         }
         else {
             Scanner fraction2 = new Scanner(frac2);
@@ -72,21 +72,60 @@ public class FracCalc {
         if (operator.equals("+")) {
             int n = (numerator1 * denominator2) + (numerator2 * denominator1);
             int d = (denominator2 * denominator1);
-            return "" + (n / d) + "_" + Math.abs((n % d)) + "/" + d;
+            if (n / d == 0) {
+                if (n % d == 0) {return "" + 0;}
+                else {return "" + nSimple(n % d, Math.abs(d)) + "/" + dSimple(n % d,Math.abs(d));}
+            }
+            else if (n % d == 0) {return "" + (n / d);}
+            return "" + (n / d) + "_" + nSimple(Math.abs((n % d)), Math.abs(d))   + "/" + dSimple(Math.abs((n % d)), Math.abs(d));
         }
         if (operator.equals("-")) {
             int n = (numerator1 * denominator2) - (numerator2 * denominator1);
             int d = (denominator2 * denominator1);
-            return "" + (n / d) + "_" + Math.abs((n % d)) + "/" + d;
+            if (n / d == 0) {
+                if (n % d == 0) {return "" + 0;}
+                else {return "" + nSimple(n % d, Math.abs(d)) + "/" + dSimple(n % d,Math.abs(d));}
+            }
+            else if (n % d == 0) {return "" + (n / d);}
+            return "" + (n / d) + "_" + nSimple(Math.abs((n % d)), Math.abs(d))   + "/" + dSimple(Math.abs((n % d)), Math.abs(d));
         }
-
-
+        if (operator.equals("*")) {
+            int n = (numerator1 * numerator2);
+            int d = (denominator2 * denominator1);
+            if (n / d == 0) {
+                if (n % d == 0) {return "" + 0;}
+                else {return "" + nSimple(n % d, Math.abs(d)) + "/" + dSimple(n % d,Math.abs(d));}
+            }
+            else if (n % d == 0) {return "" + (n / d);}
+            return "" + (n / d) + "_" + nSimple(Math.abs((n % d)), Math.abs(d))   + "/" + dSimple(Math.abs((n % d)), Math.abs(d));
+        }
+        if (operator.equals("/")) {
+            int n = (numerator1 * denominator2);
+            int d = (denominator1 * numerator2);
+            if (n / d == 0) {
+                if (n % d == 0) {return "" + 0;}
+                else {return "" + nSimple(n % d, d) + "/" + dSimple(n % d,Math.abs(d));}
+            }
+            else if (n % d == 0) {return "" + (n / d);}
+            return "" + (n / d) + "_" + nSimple(Math.abs((n % d)), Math.abs(d))   + "/" + dSimple(Math.abs((n % d)), Math.abs(d));
+        }
 
 
         
         return "";
     }
-
+    public static int gcd(int a, int b) {
+        if (b==0) return a;
+        return gcd(b,(a % b));
+    }
+    public static int nSimple(int n, int d) {
+        n /= gcd(n, d);
+        return n;
+    }
+    public static int dSimple(int n, int d) {
+        d /= gcd(n, d);
+        return d;
+    }
 
 
 }
